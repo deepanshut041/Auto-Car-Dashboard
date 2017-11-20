@@ -27,7 +27,7 @@ public class DriverFragment extends Fragment {
     private EditText driverName, driverUid, driverDl, driverDob;
     private TextView requestMsg;
     private Button submitButton;
-    private String urlAdress = "http://192.168.43.125:3001/api/drivers/new";
+    private String urlAdress = "";
 
     public DriverFragment() {
         // Required empty public constructor
