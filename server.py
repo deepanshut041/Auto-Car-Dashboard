@@ -23,11 +23,12 @@ root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app", "static",
 def static_proxy(path):
     return send_from_directory(root, path)
 
-
 @app.route('/', methods=['GET'])
 def redirect_to_index():
     return send_from_directory(root, 'index.html')
 
+
+
 if __name__ == '__main__':
 	app.debug = True
-	app.run(host = '', port=5000)
+	app.run(host = '0.0.0.0', port=5000)
