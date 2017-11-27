@@ -27,7 +27,9 @@ def static_proxy(path):
 def redirect_to_index():
     return send_from_directory(root, 'index.html')
 
-
+@app.route('/login', methods=['GET'])
+def redirect_to_login():
+    return send_from_directory(root, 'index.html')
 
 if __name__ == '__main__':
 	app.debug = True
