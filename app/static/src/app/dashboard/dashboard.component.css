@@ -1,0 +1,31 @@
+div.main-container{
+    width: 100%
+}
+
+div.container-fluid{
+    height: 100vh;
+}
+#mainRow{
+    height: 99vh;
+}
+#mapRow{
+    height: 74vh;
+}
+#alertRow{
+    height: 25vh;   
+}
+agm-map {
+    height: 72vh;
+  }
+div.col-3{
+    border: 1px solid white;
+}
+div.col-9{
+    border: 1px solid white;
+}
+div.col-12{
+    border: 1px solid white;
+}
+div.col-6{
+    border: 1px solid white;
+}

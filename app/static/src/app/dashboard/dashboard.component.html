@@ -1,0 +1,28 @@
+<div class="main-container bg-dark">
+    <div class="container-fluid">
+        <div class="row" id="mainRow">
+            <div class="col-3">
+                <h1>Hello world</h1>
+            </div>
+            <div class="col-9">
+                <div class="row" id="mapRow">
+                    <div class="col-12" id="googleMap">
+                        <agm-map [latitude]="lat" [longitude]="lng">
+                            <div *ngFor="let marker of markers">
+                                <agm-marker [latitude]="marker.lat" [longitude]="marker.lng"></agm-marker>
+                            </div>
+                        </agm-map>
+                    </div>
+                </div>
+                <div class="row" id="alertRow">
+                    <div class="col-6">
+                        <h1>Hello world</h1>
+                    </div>
+                    <div class="col-6">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
