@@ -1,5 +1,4 @@
-import { Component, OnInit } from "@angular/core";
-
+import { Component, OnInit,ViewChild, ElementRef } from "@angular/core";
 
 @Component({
   selector: "app-dashboard",
@@ -8,42 +7,49 @@ import { Component, OnInit } from "@angular/core";
 })
 
 export class DashboardComponent implements OnInit {
-
+  
   lat: number = 51.678418;
   lng: number = 7.809007;
-
   markers =[
     {
-      lat : 51.278418,
-      lng : 7.609007,
+      lat : 51.678418,
+      lng : 7.849007,
+      markerUrl:"./../../assets/car.png"
     },
     {
-      lat : 51.58418,
-      lng : 7.409007,
+      lat : 51.678426,
+      lng : 7.806007,
+      markerUrl:"./../../assets/car.png"
     },
     {
-      lat : 51.478418,
-      lng : 7.609007,
+      lat : 51.678429,
+      lng : 7.854007,
+      markerUrl:"./../../assets/car.png"
     },
     {
-      lat : 51.38418,
-      lng : 7.409007,
+      lat : 51.68430,
+      lng : 7.803007,
+      markerUrl:"./../../assets/car.png"
     }
   ]
 
-  constructor() {
+  constructor(private elementRef:ElementRef) {
 
   }
 
   ngOnInit() {
-    console.log(this.markers)
     setInterval(()=>{
       this.markers.map((marker)=>{
-        marker.lat +=.01
-        marker.lng +=.01
+        marker.lat +=.0001
+        marker.lng +=.0001
       })
-      console.log(this.markers)
     },3000)
 
+  }
+
+  markerClicked(lat,lng){
+    console.log(lat +" / "+ lng);
+    var modalButton = document.getElementById("modalLauncher");
+    modalButton.click();
   }
 }

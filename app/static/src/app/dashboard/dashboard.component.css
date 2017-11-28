@@ -1,6 +1,9 @@
 div.main-container{
     width: 100%
 }
+#modalLauncher{
+    display: none;
+}
 
 div.container-fluid{
     height: 100vh;
@@ -15,17 +18,20 @@ div.container-fluid{
     height: 25vh;   
 }
 agm-map {
-    height: 72vh;
+    height: 74vh;
   }
-div.col-3{
-    border: 1px solid white;
+#googleMap{
+    width: 100%;
 }
-div.col-9{
-    border: 1px solid white;
+
+#speedHolder{
+    height: 73vh;
 }
-div.col-12{
-    border: 1px solid white;
+
+#buttonHolder div.main-button{
+    margin-top: 10px;
 }
-div.col-6{
-    border: 1px solid white;
+
+#buttonHolder div.main-button button{
+    width: 100%;    
 }
