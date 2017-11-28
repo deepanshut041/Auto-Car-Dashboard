@@ -31,6 +31,10 @@ def redirect_to_index():
 def redirect_to_login():
     return send_from_directory(root, 'index.html')
 
+@app.route('/dashboard', methods=['GET'])
+def redirect_to_dashboard():
+    return send_from_directory(root, 'index.html')
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host = '0.0.0.0', port=5000)
