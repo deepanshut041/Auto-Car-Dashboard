@@ -1,4 +1,5 @@
 import { Component, OnInit,ViewChild, ElementRef } from "@angular/core";
+import { FlaskService } from "../flask.service";
 
 @Component({
   selector: "app-dashboard",
@@ -13,38 +14,22 @@ export class DashboardComponent implements OnInit {
   markers =[
     {
       lat : 51.678418,
-      lng : 7.849007,
-      markerUrl:"./../../assets/car.png"
-    },
-    {
-      lat : 51.678426,
-      lng : 7.806007,
-      markerUrl:"./../../assets/car.png"
-    },
-    {
-      lat : 51.678429,
-      lng : 7.854007,
-      markerUrl:"./../../assets/car.png"
-    },
-    {
-      lat : 51.68430,
-      lng : 7.803007,
+      lng : 7.809007,
       markerUrl:"./../../assets/car.png"
     }
   ]
 
-  constructor(private elementRef:ElementRef) {
+  constructor(private elementRef:ElementRef,private flaskService:FlaskService) {
 
   }
 
   ngOnInit() {
-    setInterval(()=>{
-      this.markers.map((marker)=>{
-        marker.lat +=.0001
-        marker.lng +=.0001
-      })
-    },3000)
-
+    this.flaskService.getLocation().subscribe((location:any)=>{
+      this.markers[0].lat = location.lat
+      this.markers[0].lng = location.lon
+      console.log(location.lat + " / " + location.lon)
+    }
+    )
   }
 
   markerClicked(lat,lng){
