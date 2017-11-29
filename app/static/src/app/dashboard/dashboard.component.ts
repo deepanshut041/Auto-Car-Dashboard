@@ -27,6 +27,8 @@ export class DashboardComponent implements OnInit {
     this.flaskService.getLocation().subscribe((location:any)=>{
       this.markers[0].lat = location.lat
       this.markers[0].lng = location.lon
+      this.lat = location.lat
+      this.lng = location.lon
       console.log(location.lat + " / " + location.lon)
     }
     )

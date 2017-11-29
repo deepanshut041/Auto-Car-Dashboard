@@ -1,8 +1,7 @@
-import redis
 import os
 from flask import Flask, render_template ,request ,send_from_directory
 import threading
-# import serial
+import serial
 from flask_socketio import SocketIO
 
 
@@ -29,7 +28,7 @@ app=Flask(__name__)
 socketio = SocketIO(app)
 
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app", "static", "dist")
-# ser = serial.Serial('/dev/ttyACM0', 9600)
+ser = serial.Serial('/dev/ttyACM0', 9600)
 lat = 51.678418
 lon = 7.809007
 car_id = 'Aubf760'
@@ -47,13 +46,15 @@ def set_interval(func, sec):
 
 def func():
 	global lat, lon
-	lat += 0.00001
-	lon += 0.00001 
+	read_serial = ser.readline()
+	lat = float(read_serial[0:9])
+	lon = float(read_serial[10:19])
+	print(lat,lon)
 	socketio.emit('location',{
 	 	'lat': lat,
 	 	'lon': lon
 	 	}, namespace = "/api/location")
-	#read_serial = ser.readLine()
+	#
 	#print(read_serial)
 #-----------------------------------------------------------------------------------------
 
@@ -80,10 +81,6 @@ def redirect_to_login():
 @socketio.on('connect', namespace="/api/location")
 def current_location():
 	set_interval(func, 1)
-	socketio.emit('location',{
-	 	'lat': lat,
-	 	'lon': lon
-	 	}, namespace = "/api/location")
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
