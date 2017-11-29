@@ -14,8 +14,7 @@ export class DashboardComponent implements OnInit {
   markers =[
     {
       lat : 51.678418,
-      lng : 7.809007,
-      markerUrl:"./../../assets/car.png"
+      lng : 7.809007
     }
   ]
 
@@ -29,7 +28,7 @@ export class DashboardComponent implements OnInit {
       this.markers[0].lng = location.lon
       this.lat = location.lat
       this.lng = location.lon
-      console.log(location.lat + " / " + location.lon)
+      console.log(this.lat + " / " + this.lng)
     }
     )
   }
@@ -38,5 +37,9 @@ export class DashboardComponent implements OnInit {
     console.log(lat +" / "+ lng);
     var modalButton = document.getElementById("modalLauncher");
     modalButton.click();
+  }
+  disconnectServer(){
+    this.flaskService.disconnectSocketLocation()
+    window.top.close()
   }
 }

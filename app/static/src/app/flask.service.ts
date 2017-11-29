@@ -10,10 +10,10 @@ import { Observable } from 'rxjs/Observable';
  */
 @Injectable()
 export class FlaskService {
-  private url = 'http://localhost:5000/api/location';
-  private socket; 
+  private socket;
+  private location_url = 'http://localhost:5000/socket/location';
   constructor(private http:HttpClient) {
-    this.socket = io(this.url);
+    this.socket = io(this.location_url); 
   }
   getLocation(){
     let observable = new Observable(observer => {
@@ -22,5 +22,8 @@ export class FlaskService {
       }); 
     })     
     return observable;
-  }  
+  }
+  disconnectSocketLocation(){
+    this.socket.disconnect();
+  }
 }
