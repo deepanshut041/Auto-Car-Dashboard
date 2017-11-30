@@ -4,6 +4,9 @@ from threading import Timer
 # import serial
 from flask_socketio import SocketIO
 import time
+import requests
+import json
+import websocket 
 
 
 
@@ -29,12 +32,16 @@ socketio = SocketIO(app)
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app", "static", "dist")
 #ser = serial.Serial('/dev/ttyACM0', 9600)
 thread = None;
+thread2 = None;
 k = 0;
 car_lat = 28.678808
 car_lon = 77.498741
-car_id = 'Aubf760'
+car_id = 'AUBT9863'
 car_type = 'normal'
 car_status = 'ok'
+driver_id = 1
+journey_id = 0
+ws_css = None
 #----------------------------------------------------------------------------------------
 #This code is for taking lat and lon from serial monitor 
 # def set_interval(update_location, sec):
@@ -79,26 +86,150 @@ class InfiniteTimer():
         else:
             print("Timer never started or failed to initialize.")
 
+class InfiniteTimer2():
+    """A Timer class that does not stop, unless you want it to."""
+
+    def __init__(self, seconds, target):
+        self._should_continue = False
+        self.is_running = False
+        self.seconds = seconds
+        self.target = target
+        self.thread = None
+
+    def _handle_target(self):
+        self.is_running = True
+        self.target()
+        self.is_running = False
+        self._start_timer()
+
+    def _start_timer(self):
+        if self._should_continue: # Code could have been running when cancel was called.
+            self.thread = Timer(self.seconds, self._handle_target)
+            self.thread.start()
+
+    def start(self):
+        if not self._should_continue and not self.is_running:
+            self._should_continue = True
+            self._start_timer()
+        else:
+            print("Timer already started or running, please wait if you're restarting.")
+
+    def cancel(self):
+        if self.thread is not None:
+            self._should_continue = False # Just in case thread is running and cancel fails.
+            self.thread.cancel()
+        else:
+            print("Timer never started or failed to initialize.")
+
 
 
 def update_location():
-	global car_lat, car_lon, k, thread
-	# read_serial = ser.readline()
-	# car_lat = float(read_serial[0:9])
-	# car_lon = float(read_serial[10:19])
-	print(car_lat,car_lon,k,"          ")
-	socketio.emit('location',{
-	 	'lat': car_lat,
-	 	'lon': car_lon,
-	 	'car_status': car_status,
-	 	'car_type': car_type
-	 	}, namespace = "/socket/location")
-	#
+    global car_lat, car_lon, thread, k
+    # read_serial = ser.readline()
+    # car_lat = float(read_serial[0:9])
+    # car_lon = float(read_serial[10:19])
+    print(car_lat,car_lon,"          ")
+    socketio.emit('location',{
+     	'lat': car_lat,
+     	'lon': car_lon,
+     	'car_status': car_status,
+     	'car_type': car_type
+     	}, namespace = "/socket/location")
+    if k != 0:
+        if k == 1:
+            time.sleep(3)
+            k = 2
+        update_car_status()
 	#print(read_serial)
 #-----------------------------------------------------------------------------------------
 
+# This function make journey entry in django server
+def register_start_journey():
+	global car_lat, car_lon, journey_id
+	data = {
+	"jstart_lat": str(car_lat),
+    "jstart_lon": str(car_lon),
+    "jend_lat": str(car_lat),
+    "jend_lon": str(car_lon),
+    "javg_speed": "0.000000",
+    "jfuel_con": "0.000000",
+    "jend_status": car_status,
+    "jcar_number": car_id,
+    "jdriver_id": 1
+	}
+	# json_data = json.dumps(data)
+	res = requests.post('http://localhost:8000/api/v1/cars/journey/', json = data)
+	print(res.text)
+	json_response = json.loads(res.text)
+	print(json_response['id'])
+	journey_id = json_response['id']
+
+#This function modifies journey entry in django server
+def register_end_journey():
+    global car_lat, car_lon
+    data = {
+    "jend_lat": str(round(car_lat + 6,6)),
+    "jend_lon": str(round(car_lon + 6,6)),
+    "javg_speed": "0.5000",
+    "jfuel_con": "0.5000",
+    "jend_status": car_status,
+    "jcar_number": car_id,
+    "jdriver_id": 1
+    }
+    # json_data = json.dumps(data)
+    res = requests.put('http://localhost:8000/api/v1/cars/AUBT9863/journeys/' + str(journey_id) + "/", json = data)
+    print(res.text)
+
+
+#This functions connect to websocket for car status update
+
+def css_on_message(ws, message):
+    print(message)
+
+def css_on_error(ws, error):
+    print(error)
+
+def css_on_close(ws):
+    print("### closed ###")
+
+def css_on_open(ws):
+    print("### Connection started ###")
+
+def car_status_socket():
+    global ws_css, k
+    print("Entered in car socket")
+    if k == 0:
+        ws_css = websocket.WebSocketApp("ws://localhost:8000/status/",
+            on_message = css_on_message,
+            on_error = css_on_error,
+            on_close = css_on_close)
+        ws_css.on_open = css_on_open
+        k = k + 1
+        ws_css.run_forever()
+def update_car_status():
+    global ws_css
+    data = {
+        "car_lat": "0.000000",
+        "car_lon": "0.000000",
+        "car_speed": "0.000000",
+        "car_fuel": "0.00033",
+        "car_temp": "0.000000",
+        "car_status": "off",
+        "car_number": "AUBT9863",
+        "car_driver_id": 1
+    }
+    req_data = {
+    "stream": "status",
+    "payload": data
+    }
+    # print(req_data)
+    ws_css.send(json.dumps(req_data))
+
+
 #///////////////////////////////////////////////////////////////////////////
 # Simple flask routes for front end application
+
+
 
 @app.route('/<path:path>', methods=['GET'])
 def static_proxy(path):
@@ -119,16 +250,22 @@ def redirect_to_login():
 # SocketIo routes
 @socketio.on('connect', namespace='/socket/location')
 def start_journey():
-	global thread
-	thread = InfiniteTimer(1, update_location)
-	thread.start()
+    register_start_journey()
+    global thread, thread2
+    thread = InfiniteTimer(1, update_location)
+    thread2 = InfiniteTimer2(1, car_status_socket)
+    thread.start()
+    thread2.start()
+
+
 @socketio.on('disconnect', namespace="/socket/location")
 def end_journey():
-	global thread
-	thread.cancel();
-	for i in range(0,100,1):
-		print("Journey ended")
-	os.system("sudo shutdown -h now")
+    global thread, ws_css
+    thread.cancel();
+    ws_css.close();
+    thread2.cancel();
+    register_end_journey();
+    os.system("sudo shutdown -h now")
 	#@reboot /usr/bin/python /path/to/myFile.py
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
