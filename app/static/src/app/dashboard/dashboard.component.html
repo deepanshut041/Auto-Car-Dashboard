@@ -7,7 +7,7 @@
                 </div>
                 <div id="buttonHolder" class="text-center">
                     <div class="main-button">
-                        <button class="btn btn-lg btn-danger">Emergency</button>
+                        <button class="btn btn-lg btn-danger" (click)="needEmergency()">Emergency Contact</button>
                     </div>
                     <div class="main-button">
                         <button class="btn btn-lg btn-primary" (click)="disconnectServer()">Shut Down</button>
@@ -17,11 +17,20 @@
             <div class="col-9">
                 <div class="row" id="mapRow">
                     <div id="googleMap">
-                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15">
-                            <div *ngFor="let marker of markers">
-                                <agm-marker [latitude]="marker.lat" [label]="'Emergency'" [longitude]="marker.lng" (markerClick)="markerClicked(
-                                    marker.lat,marker.lng
+                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="14">
+                            <agm-marker [latitude]="my_lat" [label]="'Me'" [longitude]="my_lng" *ngIf="my_lat"></agm-marker>
+                             <div *ngFor="let marker of markers">
+                                <agm-marker [latitude]="marker.car_lat" [label]="'Emergency'" [longitude]="marker.car_lon" (markerClick)="markerClicked(
+                                    marker.car_lat,marker.car_lon,marker.car_number,marker.car_driver_id
                                 )"></agm-marker>
+                            </div>
+                            <div *ngFor="let victim of victims">
+                                <agm-marker [latitude]="victim.vc_current_lat" [label]="'victim'" [longitude]="victim.vc_current_lon"></agm-marker>
+                                <agm-marker [latitude]="victim.ec_current_lat" [label]="'helper'" [longitude]="victim.ec_current_lon"></agm-marker>
+                                <agm-polyline>
+                                    <agm-polyline-point [latitude]="victim.vc_current_lat" [longitude]="victim.vc_current_lon"></agm-polyline-point>
+                                    <agm-polyline-point [latitude]="victim.ec_current_lat" [longitude]="victim.ec_current_lon"></agm-polyline-point>
+                                </agm-polyline>
                             </div>
                         </agm-map>
                     </div>
@@ -52,7 +61,7 @@
                 Are you sure you really want to send emergency request
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Send</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="needEmergency()">Send</button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
             </div>
         </div>

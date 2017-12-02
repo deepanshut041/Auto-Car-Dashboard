@@ -35,12 +35,12 @@ root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app", "static",
 thread = None;
 thread2 = None;
 k = 0;
-car_lat = 20
-car_lon = 77
-car_id = 'AUBT9863'
-car_type = 'normal'
+car_lat = 20.005450
+car_lon = 77.000400
+car_id = 'ass9987'
+car_type = 'emergency'
 car_status = 'on'
-driver_id = 1
+driver_id = 3
 journey_id = None
 ws_css = None
 emergency_status = False
@@ -149,7 +149,7 @@ def update_location():
             k = 2
         if car_status =='on':
             update_car_status()
-        update_emrgency_status()
+            update_emrgency_status()
     #print(read_serial)
 #-----------------------------------------------------------------------------------------
 
@@ -168,7 +168,7 @@ def register_start_journey():
     "jdriver_id": 1
     }
     # json_data = json.dumps(data)
-    res = requests.post('http://localhost:8000/api/v1/cars/journey/', json = data)
+    res = requests.post('http://544b1e41.ngrok.io/api/v1/cars/journey/', json = data)
     print(res.text)
     json_response = json.loads(res.text)
     print(json_response['id'])
@@ -187,7 +187,7 @@ def register_end_journey():
     "jdriver_id": 1
     }
     # json_data = json.dumps(data)
-    res = requests.put('http://localhost:8000/api/v1/cars/AUBT9863/journeys/' + str(journey_id) + "/", json = data)
+    res = requests.put('http://544b1e41.ngrok.io/api/v1/cars/AUBT9863/journeys/' + str(journey_id) + "/", json = data)
     print(res.text)
 
 
@@ -214,7 +214,7 @@ def car_status_socket():
     global ws_css, k
     print("Entered in car socket")
     if k == 0:
-        ws_css = websocket.WebSocketApp("ws://localhost:8000/status/",
+        ws_css = websocket.WebSocketApp("ws://544b1e41.ngrok.io/status/",
             on_message = css_on_message,
             on_error = css_on_error,
             on_close = css_on_close)
@@ -265,15 +265,15 @@ def update_car_end_status():
 def update_emrgency_status():
     global ws_css, car_lat, car_lon
     data = {
-        "vc_start_lat": str(car_lat),
-        "vc_start_lon": str(car_lon),
-        "vc_end_lat": str(car_lat),
-        "vc_end_lon": str(car_lon),
-        "vc_current_lat": str(car_lat),
-        "vc_current_lon": str(car_lon),
+        "ec_start_lat": str(car_lat),
+        "ec_start_lon": str(car_lon),
+        "ec_end_lat": str(car_lat),
+        "ec_end_lon": str(car_lon),
+        "ec_current_lat": str(car_lat),
+        "ec_current_lon": str(car_lon),
         "vc_end_status": emergency_needed,
-        "vc_car_number": car_id,
-        "vc_driver_id": driver_id,
+        "ec_car_number": car_id,
+        "ec_driver_id": driver_id,
     }
     req_data = {
     "stream": "emergency",
@@ -285,15 +285,15 @@ def update_emrgency_status():
 def update_emrgency_end_status():
     global ws_css, car_lat, car_lon
     data = {
-        "vc_start_lat": str(car_lat),
-        "vc_start_lon": str(car_lon),
-        "vc_end_lat": str(car_lat),
-        "vc_end_lon": str(car_lon),
-        "vc_current_lat": str(car_lat),
-        "vc_current_lon": str(car_lon),
+        "ec_start_lat": str(car_lat),
+        "ec_start_lon": str(car_lon),
+        "ec_end_lat": str(car_lat),
+        "ec_end_lon": str(car_lon),
+        "ec_current_lat": str(car_lat),
+        "ec_current_lon": str(car_lon),
         "vc_end_status": emergency_needed,
-        "vc_car_number": car_id,
-        "vc_driver_id": driver_id,
+        "ec_car_number": car_id,
+        "ec_driver_id": driver_id,
     }
     req_data = {
     "stream": "emergency",
@@ -330,30 +330,6 @@ def emergency_switch():
     else:
         emergency_status = True
         emergency_needed = "need"
-        json_emer = request.json
-        data = {
-            "vc_start_lat": str(car_lat),
-            "vc_start_lon": str(car_lon),
-            "vc_end_lat": str(car_lat),
-            "vc_end_lon": str(car_lon),
-            "vc_current_lat": str(car_lat),
-            "vc_current_lon": str(car_lon),
-            "ec_start_lat": str(json_emer['car_lat']),
-            "ec_start_lon": str(json_emer['car_lon']),
-            "ec_end_lat": str(json_emer['car_lat']),
-            "ec_end_lon": str(json_emer['car_lon']),
-            "ec_current_lat": str(json_emer['car_lat']),
-            "ec_current_lon": str(json_emer['car_lon']),
-            "vc_end_status": "need",
-            "ec_car_number": str(json_emer['car_number']),
-            "ec_driver_id": json_emer['car_driver_id'],
-            "vc_car_number": car_id,
-            "vc_driver_id": driver_id
-            }
-        # json_data = json.dumps(data)
-        res = requests.post('http://localhost:8000/api/v1/emergency/', json = data)
-        print(res.text)
-        print(json_emer)
     return "Recived signal"
 #/////////////////////////////////////////////////////////////////////////////
 
@@ -386,6 +362,6 @@ def end_journey():
 
 if __name__ == '__main__':
     app.debug = True
-    socketio.run(app,host = '0.0.0.0', port=5000)
+    socketio.run(app,host = '0.0.0.0', port=4000)
 
 

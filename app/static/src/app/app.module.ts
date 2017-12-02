@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from "@angular/http";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AgmCoreModule } from '@agm/core';
@@ -18,7 +19,7 @@ import { FlaskService } from "./flask.service";
   imports: [
     BrowserModule, AppRoutingModule,AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAcXrL1ag0b0f0CW5rQ_dGyh5ZhsMNTUc0'
-    }),HttpClientModule
+    }),HttpModule
   ],
   providers: [FlaskService],
   bootstrap: [AppComponent]
