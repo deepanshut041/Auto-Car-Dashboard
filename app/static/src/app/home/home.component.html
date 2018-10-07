@@ -1,0 +1,73 @@
+<div class="row no-gutters">
+    <div class="col-2 select-main-screen">
+        <div class="select">
+            <a [routerLink]="['./stream']" routerLinkActive="router-link-active">
+                <div class="button">
+                    <span><i class="fa fa-camera-retro"></i></span>
+                    <h6>Autonomus</h6>
+                </div>
+            </a>
+        </div>
+        <div class="select">
+            <a [routerLink]="['./map']" routerLinkActive="router-link-active">
+                <div class="button">
+                    <span><i class="fa fa-map"></i></span>
+                    <h6>Maps</h6>
+                </div>
+            </a>
+        </div>
+        <div class="select">
+            <a [routerLink]="['./history']" routerLinkActive="router-link-active">
+                <div class="button">
+                    <span><i class="fa fa-history"></i></span>
+                    <h6>History</h6>
+                </div>
+            </a>
+        </div>
+        <div class="select">
+            <div class="button" [routerLink]="['./video']" routerLinkActive="router-link-active">
+                <span><i class="fa fa-video-camera"></i></span>
+                <h6>Video</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-7">
+        <div class="main-screen">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="system-general-info">
+            <div class="battery-indicator">
+                <div class=battery>
+                    <svg id="battery" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 219.5 66">
+                        <style>
+                            .st0 {
+                                fill: #72CC58;
+                            }
+
+                            .st1 {
+                                fill: #1affff;
+                            }
+                        </style>
+                        <path class="st0" d="M3 5h198.9v56H4.6z" id="fill" />
+                        <path class="st1" d="M219.5 14.2H208V0H0v66h208V51.8h11.5V14.2zM198.9 56H9.2V10h189.7v46z" id="outline" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="weather">
+                    <div class="button" [routerLink]="['/video']" routerLinkActive="router-link-active">
+                        <span><i class="fa fa-thermometer-half"></i></span>
+                        <h6>56' C</h6>
+                        <h6>Partially CLoud</h6>
+                    </div>
+            </div>
+            <div class="speedometer">
+                <img src="{{SPEEDOMETER}}">
+            </div>
+        </div>
+    </div>
+</div>

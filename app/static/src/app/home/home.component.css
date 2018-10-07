@@ -1,0 +1,68 @@
+.inline{
+    display: inline-block;
+    margin: 2px;
+}
+
+.select-main-screen{
+    width: 100%;
+    height: 385px;
+    /* background-color: #202020; */
+    border-radius: 0.125rem;
+}
+
+.select{
+    width: 100%;
+    height: 25%;
+    background-color: #424242;
+    margin: 3px;
+    border-radius: 0.125rem;
+}
+
+.main-screen{
+    width: 100%;
+    height: 100%;
+    border-radius: 0.125rem;
+    margin: 5px;
+}
+
+.system-general-info{
+    width: 185px;
+    height: 380px;
+   margin: 5px;
+}
+
+.battery-indicator{
+    width: 100%;
+    height: 70px;
+    background-color: #424242;
+    border-radius: 0.125rem;
+    margin: 3px;
+}
+
+.speedometer img{
+    width: 100%;
+}
+
+.weather{
+    width: 100%;
+    background-color: #424242;
+    border-radius: 0.125rem;
+    height: 150px;
+    margin: 3px;
+}
+
+.button{
+    padding-top: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+}
+
+.button span{
+    color: #1affff;
+}
+
+.battery{
+    padding: 10px;
+}
+

@@ -1,27 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpModule } from "@angular/http";
-
-import { AppRoutingModule } from "./app-routing.module";
-import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from "./login/login.component";
-import { DashboardComponent } from "./dashboard/dashboard.component";
+import { HomeComponent } from './home/home.component';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HistoryComponent } from './history/history.component';
+import { MapComponent } from './map/map.component';
+import { StreamComponent } from './stream/stream.component';
+import { VideoComponent } from './video/video.component';
+import { AppRoutingModule } from './app-routing.module';
 
-import { FlaskService } from "./flask.service";
-
+import { AgmCoreModule } from '@agm/core';
+import { SplashComponent } from './splash/splash.component';
 @NgModule({
-  declarations: [
-    AppComponent, LoginComponent, DashboardComponent
-  ],
   imports: [
-    BrowserModule, AppRoutingModule,AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAcXrL1ag0b0f0CW5rQ_dGyh5ZhsMNTUc0'
-    }),HttpModule
+    BrowserModule, CommonModule, FormsModule, AgmCoreModule.forRoot({}), AppRoutingModule
   ],
-  providers: [FlaskService],
-  bootstrap: [AppComponent]
+  providers: [],
+  declarations: [ AppComponent, HomeComponent, HistoryComponent, MapComponent, StreamComponent, VideoComponent, SplashComponent ],
+  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {}
