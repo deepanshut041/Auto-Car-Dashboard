@@ -1,15 +1,15 @@
 import os
 from flask import Flask, render_template ,request ,send_from_directory
-# from flask_mail import Mail, Message
+from flask_mail import Mail, Message
 
 app=Flask(__name__)
-# app.config['MAIL_SERVER']='smtp.gmail.com'
-# app.config['MAIL_PORT'] = 465
-# app.config['MAIL_USERNAME'] = 'tyagideepu133@gmail.com'
-# app.config['MAIL_PASSWORD'] = 'iluvmyself'
-# app.config['MAIL_USE_TLS'] = False
-# app.config['MAIL_USE_SSL'] = True
-# mail=Mail(app)
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'tyagideepu133@gmail.com'
+app.config['MAIL_PASSWORD'] = 'iluvmyself'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail=Mail(app)
 import RPi.GPIO as GPIO
 
 
