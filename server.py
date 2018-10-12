@@ -43,7 +43,7 @@ def index():
 @app.route('/unlock')
 def unlock():
     if(status['lockStatus']):
-       GPIO.output(25, GPIO.HIGH) 
+       GPIO.output(25, GPIO.LOW) 
        status['lockStatus'] = False
     else:
         GPIO.output(25, GPIO.HIGH) # pin 22 first wing
