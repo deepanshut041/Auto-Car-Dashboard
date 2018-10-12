@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from "../app.service";
 
 @Component({
   selector: 'home-component',
@@ -7,17 +8,32 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class HomeComponent implements OnInit {
-    lat: number = 51.678418;
-    lng: number = 7.809007;
-    SPEEDOMETER = "./assets/speedometer.png"
+  SPEEDOMETER = "./assets/speedometer.png"
+  constructor(private appservice: AppService) {
 
-    constructor() {
+  }
 
-    }
-    
-    ngOnInit(): void {
-        
-    }
-  
-    
+  ngOnInit(): void {
+
+  }
+
+  shutdown(): void {
+    this.appservice.getSelf().subscribe(
+      (response: any) => {
+        console.log(response)
+      }, (err) => {
+        console.log(err)
+      }
+    )
+  }
+
+  emergency(): void {
+    this.appservice.emergency().subscribe(
+      (response: any) => {
+        console.log(response)
+      }, (err) => {
+        console.log(err)
+      }
+    )
+  }
 }

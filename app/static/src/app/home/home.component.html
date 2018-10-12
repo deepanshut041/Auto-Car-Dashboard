@@ -1,5 +1,5 @@
-<div class="row no-gutters">
-    <div class="col-2 select-main-screen">
+<div class="row no-gutters select-main-screen">
+    <div class="col-3">
         <div class="select">
             <a [routerLink]="['./stream']" routerLinkActive="router-link-active">
                 <div class="button">
@@ -32,42 +32,55 @@
         </div>
     </div>
 
-    <div class="col-7">
+    <div class="col-9">
         <div class="main-screen">
             <router-outlet></router-outlet>
         </div>
     </div>
-
+</div>
+<div class="row no-gutters indicator">
     <div class="col-3">
-        <div class="system-general-info">
-            <div class="battery-indicator">
-                <div class=battery>
-                    <svg id="battery" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 219.5 66">
-                        <style>
-                            .st0 {
-                                fill: #72CC58;
-                            }
+        <div class="battery-indicator">
+            <div class=battery>
+                <svg id="battery" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 219.5 66">
+                    <style>
+                        .st0 {
+                            fill: #72CC58;
+                        }
 
-                            .st1 {
-                                fill: #1affff;
-                            }
-                        </style>
-                        <path class="st0" d="M3 5h198.9v56H4.6z" id="fill" />
-                        <path class="st1" d="M219.5 14.2H208V0H0v66h208V51.8h11.5V14.2zM198.9 56H9.2V10h189.7v46z" id="outline" />
-                    </svg>
+                        .st1 {
+                            fill: #1affff;
+                        }
+                    </style>
+                    <path class="st0" d="M3 5h198.9v56H4.6z" id="fill" />
+                    <path class="st1" d="M219.5 14.2H208V0H0v66h208V51.8h11.5V14.2zM198.9 56H9.2V10h189.7v46z" id="outline" />
+                </svg>
+                <div>
+                    <p class="text-center text-white">Battery</p>
                 </div>
             </div>
-
-            <div class="weather">
-                    <div class="button" [routerLink]="['/video']" routerLinkActive="router-link-active">
-                        <span><i class="fa fa-thermometer-half"></i></span>
-                        <h6>56' C</h6>
-                        <h6>Partially CLoud</h6>
-                    </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="speedometer">
+            <img src="{{SPEEDOMETER}}">
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="weather">
+            <div class="button" [routerLink]="['/video']" routerLinkActive="router-link-active">
+                <span><i class="fa fa-thermometer-half"></i></span>
+                <h6>56' C</h6>
+                <h6>Partially CLoud</h6>
             </div>
-            <div class="speedometer">
-                <img src="{{SPEEDOMETER}}">
-            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div>
+            <br><br>
+            <button class="btn btn-block btn-danger" (click)="emergency()">Emergency</button>
+            <br>
+            <button class="btn btn-block btn-warning" (click)="shutdown()">Shutdown</button>
         </div>
     </div>
 </div>
